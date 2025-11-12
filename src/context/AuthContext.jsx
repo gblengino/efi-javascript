@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import { toast } from 'react-toastify'
+import { API_URL } from '../services/api'
 
 export const AuthContext = createContext()
 
@@ -30,7 +31,7 @@ useEffect(() => {
 
     const login = async (username, password) => {
         try {
-            const response = await fetch('http://18.223.136.198:5000/api/login', {
+            const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })

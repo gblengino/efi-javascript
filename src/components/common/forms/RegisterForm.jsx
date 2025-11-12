@@ -4,7 +4,7 @@ import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import "../styles/RegisterForm.css"
+import { API_URL } from '../../../services/api'
 
 
 const validationSchema = Yup.object({
@@ -20,7 +20,7 @@ export default function RegisterForm() {
 
     const handleSubmit = async (values, { resetForm }) => {
         try {
-            const response = await fetch('http://18.223.136.198:5000/api/register', {
+            const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(values)
@@ -39,7 +39,7 @@ export default function RegisterForm() {
     }
 
     return (
-        <div className='register-container'>
+        <div className='flex flex-column w-full md:w-6 m-5 p-2 text-center'>
             <h2>Crear cuenta</h2>
             <Formik
                 initialValues={{ username: '', email: '', password: '', role: 'user' }}
@@ -47,21 +47,21 @@ export default function RegisterForm() {
                 onSubmit={handleSubmit}
             >
                 {({ isSubmitting }) => (
-                    <Form className='register-form'>
-                        <div className='form-field'>
+                    <Form className='flex flex-column gap-5'>
+                        <div className='flex flex-column text-left'>
                             <label>Nombre</label>
                             <Field as={InputText} id='username' name='username' />
-                            <ErrorMessage name='username' component='small' className='error' />
+                            <ErrorMessage name='username' component='small' className='text-red-500' />
                         </div>
-                        <div className='form-field'>
+                        <div className='flex flex-column text-left'>
                             <label>Email</label>
                             <Field as={InputText} id='email' name='email' />
-                            <ErrorMessage name='email' component='small' className='error' />
+                            <ErrorMessage name='email' component='small' className='text-red-500' />
                         </div>
-                        <div className='form-field'>
+                        <div className='flex flex-column text-left'>
                             <label>Contraseña</label>
                             <Field as={InputText} id='password' name='password' type='password' />
-                            <ErrorMessage name='password' component='small' className='error' />
+                            <ErrorMessage name='password' component='small' className='text-red-500' />
                         </div>
                         <Button type='submit' label={isSubmitting ? "Registrando..." : 'Registrarse'} />
                     </Form>

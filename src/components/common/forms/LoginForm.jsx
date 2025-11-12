@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext.jsx' 
+import { AuthContext } from '../../../context/AuthContext.jsx' 
 import { useContext } from 'react'
 
 export default function LoginForm() {
@@ -33,7 +33,7 @@ export default function LoginForm() {
 
     return (
     
-        <div className='login-container'>
+        <div className='flex flex-column w-full md:w-6 m-5 p-2 text-center'>
             
             <h2>Iniciar Sesión</h2>
             
@@ -44,16 +44,16 @@ export default function LoginForm() {
             >
                 {({ isSubmitting }) => ( 
                
-                    <Form className='login-form'> 
-                        <div className='form-field'>
+                    <Form className='flex flex-column gap-5'> 
+                        <div className='flex flex-column text-left'>
                             <label>Nombre de Usuario</label> {/* <-- Corregido */}
                             <Field as={InputText} id='username' name='username' />
-                            <ErrorMessage name='username' component='small' className='error' />
+                            <ErrorMessage name='username' component='small' className='text-red-500' />
                         </div>
-                        <div className='form-field'>
+                        <div className='flex flex-column text-left'>
                             <label>Contraseña</label>
                             <Field as={InputText} id='password' name='password' type='password' />
-                            <ErrorMessage name='password' component='small' className='error' />
+                            <ErrorMessage name='password' component='small' className='text-red-500' />
                         </div>
                         <Button 
                             type='submit' 

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
+import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles.css";
