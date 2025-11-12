@@ -9,12 +9,13 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null)
 
 
-    useEffect(() => {
+useEffect(() => {
         const storedToken = localStorage.getItem('token')
         if (storedToken) {
             try {
                 const decoded = jwtDecode(storedToken)
-                if (decoded.expires_delta * 1000 > Date.now()) {
+                
+                if (decoded.exp * 1000 > Date.now()) {
                     setUser(decoded)
                     setToken(storedToken)
                 } else {
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         try {
-            const response = await fetch('ttp://18.223.136.198:5000/api/login', {
+            const response = await fetch('http://18.223.136.198:5000/api/login', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -56,8 +57,16 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    // --- FUNCIÓN LOGOUT ---
+    const logout = () => {
+        localStorage.removeItem('token'); 
+        setUser(null);                   
+        setToken(null);                 
+        toast.info("Has cerrado sesión.");
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, login }}>
+        <AuthContext.Provider value={{ user, token, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
