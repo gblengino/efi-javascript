@@ -27,12 +27,12 @@ export const AuthProvider = ({ children }) => {
         }
     }, [])
 
-    const login = async (email, password) => {
+    const login = async (username, password) => {
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('ttp://18.223.136.198:5000/api/login', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ username, password })
             })
             if (!response.ok) return toast.error("Credenciales incorrectas")
 
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
             const decoded = jwtDecode(jwtToken)
             setUser(decoded)
             setToken(jwtToken)
-
+            console.log(jwtToken)
             toast.success('Inicio de sesion exitoso')
             return true
         } catch (error) {
