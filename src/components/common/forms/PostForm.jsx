@@ -1,18 +1,19 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import * as Yup from 'yup'
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
-import { Button } from 'primereact/button'
-import { InputText } from 'primereact/inputtext'
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { MultiSelect } from 'primereact/multiselect';
 
 import { useState, useEffect } from 'react';
-import { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../../../context/AuthContext'
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../context/AuthContext';
 
-import { createPost } from '../../../services/post_service'
-import { getCategories } from '../../../services/category_service'
+import { createPost } from '../../../services/post_service';
+import { GetData } from '../../../services/get_method';
+import { Endpoints } from '../../../utils/constantAPIMethods';
 
 export default function PostForm() {
     const {token} =  useContext(AuthContext)
@@ -24,7 +25,7 @@ export default function PostForm() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await getCategories()
+                const data = await GetData({methodToExecute: Endpoints.GET_CATEGORIES})
                 setCategories(data)
             } catch(error) {
                 console.error(error)

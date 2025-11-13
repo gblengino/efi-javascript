@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { GetData } from "../../services/get_method.js";
 import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
 import { Tag } from 'primereact/tag';
@@ -11,14 +13,14 @@ export default function PostCard({id, title, author, content, date, categories, 
     const handleViewMore = () =>{
         navigate(`/posts/${id}`)
     }
-
+    
     return(
         <Card title={title} subTitle={`Por ${author} - ${date}`} className='w-6'>
             <p className='m-0'>{content}</p>
             <Divider/>
             <PostTags tags={categories} />
             <Divider/>
-            <PostComments comments={comments} onViewMore={handleViewMore} />
+            <PostComments postId={id} comments={comments} onViewMore={handleViewMore} />
         </Card>
     )
 }
