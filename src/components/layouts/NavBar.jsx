@@ -35,6 +35,14 @@ export default function NavBar() {
                 command: () => navigate('/users/id')
             }
         )
+
+        if (user.role === 'admin' || user.role === 'moderator') {
+            items.push({
+                label: 'Estadísticas',
+                icon: 'pi pi-chart-bar', 
+                command: () => navigate('/estadisticas')
+            })
+        }
     }
 
     const end = user ? (

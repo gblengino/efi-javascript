@@ -5,7 +5,8 @@ import Login from "./pages/Login";
 import MainLayout from "./components/layouts/MainLayout";
 import MinimalLayout from "./components/layouts/MinimalLayout";
 import NewPost from "./pages/NewPost";
-
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import Estadisticas from "./pages/Estadisticas";
 
 export default function App() {
   return (
@@ -14,6 +15,14 @@ export default function App() {
       <Route element={<MainLayout/>}> 
         <Route path="/" element={<Home />} />
         <Route path="/posts/new" element={<NewPost/>}/>
+        <Route 
+          path="/estadisticas" 
+          element={
+            <ProtectedRoute roles={['admin', 'moderator']}>
+              <Estadisticas />
+            </ProtectedRoute>
+          }
+        />
       </Route>
       {/* Engloba las rutas con un layout minimalista: sin Navbar, para
       las rutas de login y register */}
