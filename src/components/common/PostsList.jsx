@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 import { ProgressSpinner } from "primereact/progressspinner";
 import PostCard from "./PostCard";
-import { getPosts } from "../../services/post_service";
-import { API_URL } from "../../services/api";
+import { GetData } from "../../services/get_method";
+import { Endpoints } from "../../utils/constantAPIMethods";
 
 export default function PostList() {
     const [posts, setPosts] = useState([]);
@@ -15,8 +15,10 @@ useEffect(() => {
         const fetchPosts = async () => {
             try {
                 setLoading(true);
-                const data = await getPosts(); 
-                setPosts(data); 
+                const response = await GetData({ methodToExecute: Endpoints.GET_POSTS });
+
+                setPosts(response);
+                
             } catch (err) {
                 setError(err.message);
                 toast.error(err.message);
@@ -48,7 +50,7 @@ useEffect(() => {
             ) : (
                 posts.map(post => (
                     <PostCard 
-                        key={post.id}
+                        id={post.id}
                         title={post.title}
                         author={post.author.username}
                         date={post.created_at}

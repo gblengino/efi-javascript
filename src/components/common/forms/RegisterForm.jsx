@@ -31,10 +31,10 @@ export default function RegisterForm() {
                 resetForm()
                 setTimeout(() => navigate('/'), 2000)
             } else {
-                toast.error("Hubo un erro al registrar el usuario")
+                toast.error("Hubo un error al registrar el usuario")
             }
         } catch (error) {
-            toast.error("hubo un error con el servidor", error)
+            toast.error("Hubo un error con el servidor", error)
         }
     }
 
