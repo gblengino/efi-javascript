@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 import { ProgressSpinner } from "primereact/progressspinner";
 import PostCard from "./PostCard";
+import { getPosts } from "../../services/post_service";
 import { API_URL } from "../../services/api";
 
 export default function PostList() {
@@ -9,19 +10,13 @@ export default function PostList() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
+useEffect(() => {
+        // 2. El useEffect ahora es mucho más simple
         const fetchPosts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`${API_URL}/posts`);
-
-                if (!response.ok) {
-                    throw new Error("No se pudieron cargar los posts.");
-                }
-
-                const data = await response.json();
-                setPosts(data);
-                
+                const data = await getPosts(); 
+                setPosts(data); 
             } catch (err) {
                 setError(err.message);
                 toast.error(err.message);
