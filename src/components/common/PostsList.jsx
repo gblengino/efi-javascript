@@ -50,7 +50,7 @@ export default function PostList() {
     }
 
     return (
-        <div className="w-full flex flex-column align-items-center justify-content-center gap-3 m-3">
+        <div className="w-full flex flex-column align-items-center justify-content-center gap-3 m-auto mt-3 mb-3">
             {posts.length === 0 ? (
                 <p>No hay posts para mostrar.</p>
             ) : (

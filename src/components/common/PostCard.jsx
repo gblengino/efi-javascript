@@ -47,7 +47,7 @@ export default function PostCard({id, title, author, content, date, categories, 
             <LinkButton onClick={() => {deleteCurrentPost(id)}} icon='pi pi-trash' className='p-button-danger'/>
         </div>
         : null} 
-        className='w-6'>
+        className=' w-10 md:w-6'>
             <p className='m-0'>{content}</p>
             <Divider/>
             <PostTags tags={categories} />

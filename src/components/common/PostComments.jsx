@@ -76,10 +76,6 @@ export default function PostComments({ postId, comments = [] }){
                 )
             )
             }
-        <Divider/>
-        {token ? (
-        <CommentForm postId={postId} onAddComment={handleAddComment} />
-            ): null}
             {currentComments.length > 2 && (
                 <Button
                     
@@ -91,6 +87,11 @@ export default function PostComments({ postId, comments = [] }){
                     className="p-button-sm"
                 />
             )}
+        <Divider/>
+        {token ? (
+        <CommentForm postId={postId} onAddComment={handleAddComment} />
+            ): null}
+            
         
         </div>
     )
