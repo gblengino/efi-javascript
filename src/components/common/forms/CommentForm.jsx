@@ -3,13 +3,13 @@ import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { AuthContext } from '../../../context/AuthContext.jsx' 
 import { useContext } from 'react'
-import { createComment } from '../../../services/create_comment.js';
+import { createComment } from '../../../services/comment_service.js';
 
-export default function CommentForm({ postId, onAddComment}) {
+export default function CommentForm({ postId, initialContent = '' ,onSubmit, onAddComment}) {
 
     const {token} =  useContext(AuthContext)
 
-    const [comment, setComment] = useState("");
+    const [comment, setComment] = useState(initialContent);
     const [error, setError] = useState("");
 
     const validateComment = (text) => {
@@ -21,12 +21,18 @@ export default function CommentForm({ postId, onAddComment}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const validationError = validateComment(comment);
         if (validationError) {
             setError(validationError);
             return;
         }
         setError("");
+
+        if (onSubmit) {
+            onSubmit({content: comment})
+            return
+        }
 
         try {
             const newComment = await createComment(postId, { content: comment }, token);

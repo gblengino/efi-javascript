@@ -33,7 +33,6 @@ export default function PostList() {
         }, []);
 
     const handlePostDeleted = (id) => {
-        console.log('elimina render')
         setPosts(prev => prev.filter(post => post.id !== id))
     }
 

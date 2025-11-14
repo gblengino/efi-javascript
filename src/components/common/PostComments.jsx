@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 import Comment from "./Comment";
 import  CommentForm  from "./forms/CommentForm"
+import { AuthContext } from "../../context/AuthContext";
 
 export default function PostComments({ postId, comments = [] }){
     
     const [currentComments, setComments] = useState(comments)
+
+    const { token } = useContext(AuthContext)
+
 
     useEffect(()=>{
         setComments(comments)
@@ -15,6 +19,14 @@ export default function PostComments({ postId, comments = [] }){
     const handleAddComment = (newComment) => {
         const updatedComments = [...currentComments, newComment]
         setComments(updatedComments)
+    }
+
+    const handleUpdateComment = (comment_id, updatedComment) => {
+        setComments(prev => prev.map(c => c.id === comment_id ? {...c, ...updatedComment} : c));
+    }
+
+    const handleDeleteComment = (comment_id) => {
+        setComments(prev => prev.filter(c => c.id !== comment_id))
     }
 
     const latestComments = currentComments.slice(-2).reverse()
@@ -41,9 +53,13 @@ export default function PostComments({ postId, comments = [] }){
                 latestComments.map((comment, index) => (
                     <Comment
                         key={index} 
+                        id={comment.id}
+                        author_id={comment.author.id}
                         author={comment.author.username}
                         date={parseDate(comment.created_at)}
                         content={comment.content}
+                        onUpdate={handleUpdateComment}
+                        onDelete={handleDeleteComment}
                     />
                 )) ) : (
                     currentComments.map((comment, index) => (
@@ -52,6 +68,8 @@ export default function PostComments({ postId, comments = [] }){
                         author={comment.author.username}
                         date={parseDate(comment.created_at)}
                         content={comment.content}
+                        onUpdate={handleUpdateComment}
+                        onDelete={handleDeleteComment}
                     />
                         )
                     )
@@ -59,8 +77,9 @@ export default function PostComments({ postId, comments = [] }){
             )
             }
         <Divider/>
+        {token ? (
         <CommentForm postId={postId} onAddComment={handleAddComment} />
-
+            ): null}
             {currentComments.length > 2 && (
                 <Button
                     
@@ -72,6 +91,7 @@ export default function PostComments({ postId, comments = [] }){
                     className="p-button-sm"
                 />
             )}
+        
         </div>
     )
 }

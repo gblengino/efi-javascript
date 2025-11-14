@@ -42,9 +42,9 @@ export default function PostCard({id, title, author, content, date, categories, 
     return(
         <Card title={title} subTitle={`Por ${author} - ${date}`} 
         header={options ?
-        <div className='flex h-full justify-content-end gap-4'>
-            <LinkButton to={`posts/edit/${id}`} icon='pi pi-pencil' severity='success' aria-label='Cancel'/> 
-            <LinkButton onClick={() => {deleteCurrentPost(id)}} icon='pi pi-times' severity='danger'/>
+        <div className='flex h-full justify-content-end gap-4 pt-3 pr-3'>
+            <LinkButton to={`posts/edit/${id}`} icon='pi pi-pencil' text/> 
+            <LinkButton onClick={() => {deleteCurrentPost(id)}} icon='pi pi-trash' className='p-button-danger'/>
         </div>
         : null} 
         className='w-6'>
