@@ -43,6 +43,13 @@ export default function NavBar() {
                 command: () => navigate('/stats')
             })
         }
+        if (user.role === 'admin') {
+            items.push({
+                label: 'Crear Categoría',
+                icon: 'pi pi-plus', 
+                command: () => navigate('/categories')
+            })
+        }
     }
 
     const end = user ? (

@@ -65,7 +65,7 @@ export default function PostList() {
                         content={post.content}
                         categories={post.categories}
                         comments={post.comments}
-                        options={user.user_id === post.author.id}
+                        options={user?.user_id === post.author.id}
                         onDelete={handlePostDeleted}
                         />
                 )).reverse()

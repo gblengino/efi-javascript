@@ -9,6 +9,7 @@ import Post from "./pages/Post";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import Estadisticas from "./pages/Estadisticas";
 import EditPost from "./pages/EditPost";
+import Categories from "./pages/Categories";
 
 export default function App() {
   return (
@@ -21,6 +22,9 @@ export default function App() {
         <Route path="/posts/edit/:id" element={<EditPost/>}/>
         <Route element={<ProtectedRoute roles={['admin', 'moderator']}/>}>
           <Route path="/stats" element={<Estadisticas/>}/>
+        </Route>
+        <Route element={<ProtectedRoute roles={['admin']}/>}>
+          <Route path="/categories" element={<Categories/>}/>
         </Route>
       </Route>
       {/* Engloba las rutas con un layout minimalista: sin Navbar, para

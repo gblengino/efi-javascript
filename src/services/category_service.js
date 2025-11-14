@@ -14,3 +14,20 @@ export async function getCategories() {
 
     return response.json();
 }
+
+export async function createCategory(data, token) {
+    const response = await fetch(`${API_URL}/${category_endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+         },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Error al crear la categoría.');
+    }
+
+    return response.json();
+}
