@@ -11,16 +11,22 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 
-import { createPost } from '../../../services/post_service';
 import { GetData } from '../../../services/get_method';
 import { Endpoints } from '../../../utils/constantAPIMethods';
+import { createPost, editPost } from '../../../services/post_service';
 
-export default function PostForm() {
+export default function PostForm({id=null, title = '', content = '', currentCategories = [], method=''}) {
     const {token} =  useContext(AuthContext)
 
     const navigate = useNavigate()
     
-    const [categories, setCategories] = useState([])
+    let currentCategory_ids = []
+
+    if (currentCategories) {
+        currentCategory_ids = currentCategories.map((cat) => cat.id)
+    }
+
+    const [categories, setCategories] = useState(currentCategories)
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -41,24 +47,35 @@ export default function PostForm() {
     })
 
     const handleSubmit = async (values, {resetForm}) => {
+        if (method === 'POST') {
+            const success = await createPost(values, token)
 
-        const success = await createPost(values, token)
+            if (success){
+                resetForm();
+                navigate('/')
+            }
 
-        if (success){
-            resetForm();
-            navigate('/')
+        }
+
+        if (method === 'PUT') {
+            const success = await editPost(values, token, id)
+
+            if (success){
+                resetForm();
+                navigate(`/post/${id}`)
+            }
+
         }
 
     }
 
     return (
         <Formik
-            initialValues={{ title: "", content:"", category_ids:[]}}
+            initialValues={{ title: title, content: content, category_ids:currentCategory_ids}}
             validationSchema={validationSchema}
-            onSubmit={(handleSubmit)}
+            onSubmit={handleSubmit}
         >
             {({ values, setFieldValue, isSubmitting }) => ( 
-               
                     <Form className='flex-1 flex flex-column gap-5'> 
                         <div className='flex flex-column text-left'>
                             <label>Título</label>
@@ -82,7 +99,7 @@ export default function PostForm() {
                                 )
                                 }
                                 optionLabel="name"
-                                optionValue="id"
+                                optionValue='id'
                                 filter
                                 placeholder="Selecciona categorías"
                                 display='chip'
@@ -91,7 +108,7 @@ export default function PostForm() {
                         </div>
                         <Button 
                             type='submit' 
-                            label={isSubmitting ? "Creando..." : 'Crear Post'}
+                            label={method==='POST' ? isSubmitting ? "Creando..." : 'Crear Post' : isSubmitting ? "Editando..." : 'Editar Post'}
                             disabled={isSubmitting}
                         />
                     </Form>

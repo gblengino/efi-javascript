@@ -1,11 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "primereact/button";
+import { Divider } from "primereact/divider";
 import Comment from "./Comment";
 import  CommentForm  from "./forms/CommentForm"
 
-export default function PostComments({ postId, comments = [], onViewMore }){
+export default function PostComments({ postId, comments = [] }){
     
-    const latestComments = comments.slice(-2).reverse()
+    const [currentComments, setComments] = useState(comments)
+
+    useEffect(()=>{
+        setComments(comments)
+    }, [comments])
+
+    const handleAddComment = (newComment) => {
+        const updatedComments = [...currentComments, newComment]
+        setComments(updatedComments)
+    }
+
+    const latestComments = currentComments.slice(-2).reverse()
+    const [showAll, setShowAll] = useState(false)
     
     function parseDate(isoString) {
     if (!isoString) return "";
@@ -19,27 +32,38 @@ export default function PostComments({ postId, comments = [], onViewMore }){
     }
 
     return (
-        <div className="flex flex-column">
+        <div className="flex-1 flex flex-column">
             <h4>Comentarios</h4>
 
-            {commentsToShow.length === 0 ? (
+            {currentComments.length === 0 ? (
                 <p>Aún no hay comentarios aquí.</p>
-            ) : (
-                commentsToShow.map((comment, index) => (
+            ) : ( !showAll ? (
+                latestComments.map((comment, index) => (
                     <Comment
                         key={index} 
                         author={comment.author.username}
                         date={parseDate(comment.created_at)}
                         content={comment.content}
                     />
-                ))
+                )) ) : (
+                    currentComments.map((comment, index) => (
+                    <Comment
+                        key={index} 
+                        author={comment.author.username}
+                        date={parseDate(comment.created_at)}
+                        content={comment.content}
+                    />
+                        )
+                    )
+                )
             )
-        }
-        <CommentForm postId={postId} />
+            }
+        <Divider/>
+        <CommentForm postId={postId} onAddComment={handleAddComment} />
 
-            {comments.length > 2 && (
+            {currentComments.length > 2 && (
                 <Button
-                   
+                    
                     label={showAll ? "Ver Menos" : "Ver Mas"}
                     
                     

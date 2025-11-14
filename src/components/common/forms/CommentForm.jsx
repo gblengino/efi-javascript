@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Button } from 'primereact/button'
-import { InputText } from 'primereact/inputtext'
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
 import { AuthContext } from '../../../context/AuthContext.jsx' 
 import { useContext } from 'react'
 import { createComment } from '../../../services/create_comment.js';
 
-export default function CommentForm({ postId }) {
+export default function CommentForm({ postId, onAddComment}) {
 
     const {token} =  useContext(AuthContext)
 
@@ -29,20 +29,21 @@ export default function CommentForm({ postId }) {
         setError("");
 
         try {
-            await createComment(postId, { content: comment }, token);
+            const newComment = await createComment(postId, { content: comment }, token);
+            onAddComment(newComment)
             setComment("");
-            reloadPost();
         } catch (err) {
             console.error(err);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <InputText
+        <form onSubmit={handleSubmit} className='flex-1 flex flex-column gap-3'>
+            <InputTextarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Escribe un comentario..."
+                rows={3}
             />
             {error && <small className="text-red-500">{error}</small>}
             <Button type="submit" label="Enviar" />

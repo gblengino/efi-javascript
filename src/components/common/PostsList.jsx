@@ -4,31 +4,38 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import PostCard from "./PostCard";
 import { GetData } from "../../services/get_method";
 import { Endpoints } from "../../utils/constantAPIMethods";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function PostList() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-useEffect(() => {
-        // 2. El useEffect ahora es mucho más simple
-        const fetchPosts = async () => {
-            try {
-                setLoading(true);
-                const response = await GetData({ methodToExecute: Endpoints.GET_POSTS });
+    const { user } = useContext(AuthContext)
 
-                setPosts(response);
-                
-            } catch (err) {
-                setError(err.message);
-                toast.error(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    useEffect(() => {
+            const fetchPosts = async () => {
+                try {
+                    setLoading(true);
+                    const response = await GetData({ methodToExecute: Endpoints.GET_POSTS });
 
-        fetchPosts();
-    }, []);
+                    setPosts(response);
+                    
+                } catch (err) {
+                    setError(err.message);
+                    toast.error(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchPosts();
+        }, []);
+
+    const handlePostDeleted = (id) => {
+        console.log('elimina render')
+        setPosts(prev => prev.filter(post => post.id !== id))
+    }
 
     if (loading) {
         
@@ -49,7 +56,8 @@ useEffect(() => {
                 <p>No hay posts para mostrar.</p>
             ) : (
                 posts.map(post => (
-                    <PostCard 
+                    <PostCard
+                        key={post.id}
                         id={post.id}
                         title={post.title}
                         author={post.author.username}
@@ -57,8 +65,10 @@ useEffect(() => {
                         content={post.content}
                         categories={post.categories}
                         comments={post.comments}
+                        options={user.user_id === post.author.id}
+                        onDelete={handlePostDeleted}
                         />
-                ))
+                )).reverse()
             )}
         </div>
     );

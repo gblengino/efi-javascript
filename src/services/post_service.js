@@ -45,3 +45,40 @@ export async function createPost(data, token) {
 
     return response.json();
 }
+
+export async function editPost(data, token, id) {
+    const response = await fetch(`${API_URL}/${posts_endpoint}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+         },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Error al editar el post');
+    }
+
+    return response.json();
+}
+
+export async function deletePost(token, id) {
+    const response = await fetch(`${API_URL}/${posts_endpoint}/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+         }
+    });
+
+    if (response.status === 204) {
+        return { success: true }
+    }
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Error al eliminar el post');
+    }
+
+    return response.json();
+}

@@ -40,7 +40,7 @@ export default function NavBar() {
             items.push({
                 label: 'Estadísticas',
                 icon: 'pi pi-chart-bar', 
-                command: () => navigate('/estadisticas')
+                command: () => navigate('/stats')
             })
         }
     }
