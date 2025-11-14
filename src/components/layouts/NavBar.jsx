@@ -16,11 +16,6 @@ export default function NavBar() {
             icon: 'pi pi-home',
             command: () => navigate('/')
         },
-        {
-            label: 'Acerca de',
-            icon: 'pi pi-circle-info',
-            command: () => navigate('/about_us')
-        }
     ]
     if (user) {
         items.push(
@@ -28,11 +23,6 @@ export default function NavBar() {
                 label: 'Nuevo Post',
                 icon: 'pi pi-plus',
                 command: () => navigate('/posts/new')
-            },
-            {
-                label: 'Tu Perfil',
-                icon: 'pi pi-user',
-                command: () => navigate('/users/id')
             }
         )
 
